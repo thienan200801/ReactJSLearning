@@ -339,38 +339,84 @@
 //    </div>
 //  );
 
-import React, { useState, useCallback } from 'react'
+// import React, { useState, useCallback } from 'react'
 
-const storeSet = new Set(); 
+// const storeSet = new Set(); 
 
-function Counter() {
-	const [count, setCount] = useState(0);
-	const [countOther, setCountOther] = useState(0);
+// function Counter() {
+// 	const [count, setCount] = useState(0);
+// 	const [countOther, setCountOther] = useState(0);
 	
-	const increase = () => setCount(count + 1);
-	const decrease = () => setCount(count - 1);
+// 	const increase = () => setCount(count + 1);
+// 	const decrease = () => setCount(count - 1);
 	
-	const increaseOther = () => setCountOther(countOther + 1);
-	const decreaseOther = () => setCountOther(countOther + 1);
+// 	const increaseOther = () => setCountOther(countOther + 1);
+// 	const decreaseOther = () => setCountOther(countOther + 1);
 	
-	storeSet.add(increase);
-	storeSet.add(decrease);
-	storeSet.add(increaseOther);
-	storeSet.add(decreaseOther);
+// 	storeSet.add(increase);
+// 	storeSet.add(decrease);
+// 	storeSet.add(increaseOther);
+// 	storeSet.add(decreaseOther);
 	
-	console.log(storeSet);
+// 	console.log(storeSet);
 	
+// 	return (
+// 			<>
+// 				<div>Count: {count}</div>
+// 				<button onClick={increase} ref="a">+</button>
+				
+// 				<button onClick={increase}>-</button>
+
+// 				<div>Count other: {countOther}</div>
+// 				<button onClick={increaseOther}>+</button>
+// 				<button onClick={decreaseOther}>-</button>
+// 			</>
+// 	)
+// }
+
+// export default Counter;
+import { useCallback, useState } from 'react';
+import './App.css';
+
+
+export default function App(){
+	const [result, setResult] = useState(0);
+	const [para, setPara] = useState('1+1');
+	
+	const handleCalculate = useCallback(
+		(str)=>{
+			let a = '', sign = '', b = '';
+			for(let i=0; i<str.length; i++){
+				if(str[i] !== '+' && str[i] !== '-'  && str[i] !== '*'  && str[i] !== '/'){
+					a += str[i];
+				}
+				else {
+					b = str.slice(i+1);
+					sign += str[i];
+					break;
+				}
+			}
+			if(sign === '+') setResult(parseInt(a) + parseInt(b));
+			if(sign === '-') setResult(parseInt(a) - parseInt(b));
+			if(sign === '*') setResult(parseInt(a) * parseInt(b));
+			if(sign === '/') setResult(parseInt(a) / parseInt(b));
+		}	
+	, []) 
+
 	return (
-			<>
-				<div>Count: {count}</div>
-				<button onClick={increase}>+</button>
-				<button onClick={increase}>-</button>
-
-				<div>Count other: {countOther}</div>
-				<button onClick={increaseOther}>+</button>
-				<button onClick={decreaseOther}>-</button>
-			</>
+		<div className="App">
+			<label htmlFor="">
+				<input type="text" 
+					onChange={(e)=>setPara(e.target.value)}
+					value={para}
+				/>
+				<button className='submit-btn'
+					onClick={()=>{handleCalculate(para)}}
+				>
+					Calculate
+				</button>
+				<div>{result}</div>
+			</label>
+		</div>
 	)
 }
-
-export default Counter;
